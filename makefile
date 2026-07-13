@@ -1,14 +1,11 @@
 
 INPUT = ex1
-# FUNCTIONS = functions  $(FUNCTIONS)$(tag) 
 tag = .cu
 compiler = nvcc
 output = main
 
 compile:
-	@$(compiler) $(INPUT)$(tag) -o $(output)
-
-
+	$(compiler) $(INPUT)$(tag) -o $(output)
 
 push:
 	@git add *
