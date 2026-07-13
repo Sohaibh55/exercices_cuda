@@ -2,7 +2,7 @@
 INPUT ?= ex3
 tag = .cu
 compiler = nvcc
-output = main
+output = ex3
 
 compile:
 	@$(compiler) $(INPUT)$(tag) -o $(output)
