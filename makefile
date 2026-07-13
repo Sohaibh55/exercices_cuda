@@ -5,7 +5,7 @@ compiler = nvcc
 output = main
 
 compile:
-	$(compiler) $(INPUT)$(tag) -o $(output)
+	@$(compiler) $(INPUT)$(tag) -o $(output)
 
 push:
 	@git add *
