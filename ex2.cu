@@ -29,7 +29,7 @@ void PrintOut(float* mtx,int width,int height) {
         for (int j = 0; j < width; j++)
         {
             int idx = i * width + j;
-            printf("%f " , mtx[idx]);
+            printf("%.4f " , mtx[idx]);
         }
         printf("\n");
     }
@@ -73,7 +73,7 @@ void set_up(int rows,int cols,int blockDimX,int blockDimY) {
     printf("out of bound Thread ToTal : %d\n" , thread_out);
 
     cudaFree(d_a);free(h_a);
-    
+
 }
 int main(int argc , char* argv[]) {
 
