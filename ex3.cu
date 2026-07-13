@@ -129,6 +129,8 @@ int main(int argc , char* argv[]) {
 
     int rows = atoi(argv[1]), cols = atoi( argv[2]);
 
-    if( argc != 3) printf("Error : %s requires 3 arguments" , argv[0]);    
+    if( argc != 3) { printf("Error : %s requires 3 arguments\n" , argv[0]); exit(1);  } 
+
     set_up(rows,cols,16,16);
+
 }
