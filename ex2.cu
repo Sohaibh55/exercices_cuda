@@ -29,7 +29,7 @@ void PrintOut(float* mtx,int width,int height) {
         for (int j = 0; j < width; j++)
         {
             int idx = i * height + j;
-            printf("%d " , mtx[idx]);
+            printf("%f " , mtx[idx]);
         }
         printf("\n");
     }
@@ -78,12 +78,6 @@ int main(int argc , char* argv[]) {
 
 
     set_up(rows,cols,blockDimX,blockDimY);
-
-  
-    
-   
-
-    
 
 
 
