@@ -8,6 +8,6 @@ compile:
 	@$(compiler) $(INPUT)$(tag) -o $(output)
 
 push:
-	git add *
+	git add .
 	git commit -m "updated"
-	git push -u origin main
+	git push 
