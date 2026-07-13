@@ -9,7 +9,7 @@ __global__ void mult_gpu(float* mtx,int rows,int cols) {
     
     if ( row < rows && col < cols) {
         int idx = row * cols + col;
-        mtx[idx] = mtx[idx] * 2.0f;
+        mtx[idx] = 255 - mtx[idx];
     }
 }
 void multi_cpu(float* mtx,int rows,int cols) {
@@ -19,7 +19,7 @@ void multi_cpu(float* mtx,int rows,int cols) {
         for (int j = 0; j < cols; j++)
         {
             int idx = i * cols + j;
-            mtx[idx] = mtx[idx] * 2.0f;
+            mtx[idx] = 255 - mtx[idx];
         }
         
     }
@@ -31,7 +31,7 @@ void fillMatrix(float* mtx,int width,int height) {
         for (int j = 0; j < width; j++)
         {
             int idx = i * width + j;
-            float value = 1.0f;
+            float value = (i + j) % 256;
             mtx[idx] = value;
         }
     }
@@ -127,14 +127,8 @@ void set_up(int rows,int cols,int blockDimX,int blockDimY) {
 }
 int main(int argc , char* argv[]) {
 
-    int rows =  5000, cols = 5000 ;
+    int rows = atoi(argv[1]), cols = atoi( argv[2]);
 
-    int sizes[6] = {32,64,128,256,512,1024};
-
-    for (int i = 0; i < 6; i++) {
-
-        printf("For [ %d,%d ] :\n" , sizes[i] , sizes[i]);
-        set_up(rows,cols,sizes[i],sizes[i]);
-    }
-
+    if( argc != 3) printf("Error : %s requires 3 arguments" , argv[0]);    
+    set_up(rows,cols,16,16);
 }
