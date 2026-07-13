@@ -108,8 +108,8 @@ void set_up(int rows,int cols,int blockDimX,int blockDimY) {
 
     cudaMemcpy(d_h_a,d_a,size,cudaMemcpyDeviceToHost);
 
-    PrintOut(h_a,cols,rows);
-    PrintOut(d_h_a,cols,rows);
+    // PrintOut(h_a,cols,rows);
+    // PrintOut(d_h_a,cols,rows);
 
     int thread_in = gridDimX * gridDimY * blockDimX * blockDimY;
     int thread_out = thread_in - n;
@@ -122,7 +122,7 @@ void set_up(int rows,int cols,int blockDimX,int blockDimY) {
     if(check_diff(d_h_a,h_a,rows,cols) ) printf("The results are the same");
     else printf("The results are differents");
 
-    cudaFree(d_a);free(h_a);
+    cudaFree(d_h_a);cudaFree(d_a);free(h_a);
 
 }
 int main(int argc , char* argv[]) {
