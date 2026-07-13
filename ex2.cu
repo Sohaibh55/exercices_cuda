@@ -89,6 +89,4 @@ int main(int argc , char* argv[]) {
 
     set_up(rows,cols,blockDimX,blockDimY);
 
-
-
 }
