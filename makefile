@@ -11,6 +11,6 @@ compile:
 
 
 push:
-	git add *
-	git commit -m "updated"
-	git push -u origin main
+	@git add *
+	@git commit -m "updated"
+	@git push -u origin main
