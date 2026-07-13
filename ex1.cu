@@ -8,7 +8,7 @@ __global__ void kernel_1D() {
     int id = row * (gridDim.x * blockDim.x) + col; 
 
     printf( "Block (%d,%d) Thread(%d,%d) -> Global %d" , 
-    blockIdx.x , blockIdx.y , threadIdx.x , threadIdx.y , i)
+    blockIdx.x , blockIdx.y , threadIdx.x , threadIdx.y , id);
 }
 
 int main(int argc , char* argv[]) {
