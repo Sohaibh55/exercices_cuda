@@ -78,8 +78,8 @@ void set_up(int rows,int cols,int blockDimX,int blockDimY) {
 
     cudaMemcpy(d_a,h_a,size,cudaMemcpyHostToDevice);
 
-    int gridDimX = (blockDimX + cols - 1) / blockDimX;
-    int gridDimY = (blockDimY + rows - 1) / blockDimY;
+    int gridDimX = (cols + blockDimX  - 1) / blockDimX;
+    int gridDimY = (rows + blockDimY - 1) / blockDimY;
 
 
     dim3 block(blockDimX,blockDimY);
