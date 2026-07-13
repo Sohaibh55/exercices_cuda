@@ -1,5 +1,5 @@
 
-INPUT ?= ex2
+INPUT ?= ex3
 tag = .cu
 compiler = nvcc
 output = main

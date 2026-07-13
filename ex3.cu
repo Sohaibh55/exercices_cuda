@@ -35,7 +35,7 @@ void fillMatrix(float* mtx,int width,int height) {
             mtx[idx] = value;
         }
     }
-    printf("\n")
+    printf("\n");
 }
 void PrintOut(float* mtx,int width,int height) {
     for (int i = 0; i < height; i++)
@@ -58,7 +58,7 @@ bool check_diff(float* mtx_cpu,float* mtx_gpu,int rows,int cols) {
             if(mtx_cpu[idx] != mtx_gpu[idx]) return false;
         }
     }
-    return true
+    return true;
     
 }
 void set_up(int rows,int cols,int blockDimX,int blockDimY) {
