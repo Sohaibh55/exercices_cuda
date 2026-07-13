@@ -29,7 +29,7 @@ void PrintOut(float* mtx,int width,int height) {
         for (int j = 0; j < width; j++)
         {
             int idx = i * width + j;
-            printf("%.4f " , mtx[idx]);
+            printf("%.2f " , mtx[idx]);
         }
         printf("\n");
     }
