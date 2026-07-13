@@ -38,7 +38,7 @@ void PrintOut(float* mtx,int width,int height) {
 void set_up(int rows,int cols,int blockDimX,int blockDimY) {
 
     int n = rows * cols;
-    size_t size = rows * cols * sizeof(float);
+    size_t size =  n * sizeof(float);
     float* h_a = (float*)malloc(size);
    
     
