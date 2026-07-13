@@ -66,10 +66,10 @@ void set_up(int rows,int cols,int blockDimX,int blockDimY) {
 
     int thread_in = gridDimX * gridDimY * blockDimX * blockDimY;
     int thread_out = thread_in - n;
-    
-    printf("Grid dimension : %d , %d" , gridDimX , gridDimY);
-    printf("Thread ToTal : %d" , thread_in);
-    printf("out of bound Thread ToTal : %d" , thread_out);
+
+    printf("Grid dimension : %d , %d\n" , gridDimX , gridDimY);
+    printf("Thread ToTal : %d\n" , thread_in);
+    printf("out of bound Thread ToTal : %d\n" , thread_out);
 
 
 }
