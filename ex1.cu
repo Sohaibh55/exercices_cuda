@@ -60,6 +60,13 @@ void PrintOut(const float* mtx,int height,int width) {
         printf("\n");
     }
 }
+
+void output( const int m, const int k, const int n , const int err) {
+    printf("=== Noyau naif");
+    printf("M(%d,%d) * N(%d,%d) = P(%d,%d) Err max: %f" , m , k , k , n , m , n , err);
+} 
+
+
 bool check_diff(const float* mtx_cpu,const float* mtx_gpu,const int height,const int width) {
    
     for (int i = 0; i < height; i++)
@@ -72,7 +79,7 @@ bool check_diff(const float* mtx_cpu,const float* mtx_gpu,const int height,const
     }
     return true;
 }
-void err_max(const float* mtx_cpu,const float* mtx_gpu,const int width,const int height) {
+float err_max(const float* mtx_cpu,const float* mtx_gpu,const int width,const int height) {
     
     float cur_err , err = 0.0f;
     
@@ -87,6 +94,7 @@ void err_max(const float* mtx_cpu,const float* mtx_gpu,const int width,const int
             if ( cur_err > err ) err = cur_err ; 
         }
     }
+    return err;
 }
 void set_up(int m,int k,int n) {
 
@@ -141,19 +149,10 @@ void set_up(int m,int k,int n) {
 
     cudaMemcpy(P_d_h,P_gpu,sizeP,cudaMemcpyDeviceToHost);
 
-    // PrintOut(h_a,height,width);
-    // PrintOut(d_h_a,height,width);
+    float err = err_max(P_d_h,P_gpu,m,n);
 
-    int thread_in = gridDimX * gridDimY * blockDimX * blockDimY;
-    int thread_out = thread_in - n;
+    output(m,k,n,err);
 
-    printf("Grid dimension : %d , %d\n" , gridDimX , gridDimY);
-    printf("Thread ToTal : %d\n" , thread_in);
-    printf("out of bound Thread ToTal : %d\n" , thread_out);
-    printf("Kernel time = %f ms\n" , time);
-
-    if(check_diff(P_d_h,P_cpu,m,n) ) printf("The results are the same");
-    else printf("The results are differents");
 
     cudaFree(P_gpu);
     free(M);free(N);
@@ -164,13 +163,12 @@ int main(int argc , char* argv[]) {
    
     srand(42);
     
-    const int TestSize = 1;
+    set_up(512,512,512);
+    set_up(1024,1024,1024);
+    set_up(2048,2048,2048);
 
-    int m[TestSize] = {512};
-    int k[TestSize] = {512};
-    int n[TestSize] = {512};
-    
-    for (int i = 0; i < TestSize; i++)
-        set_up(m[i],k[i],n[i]);
+    set_up(2048,1024,512);
+    set_up(1024,4096,512);
+    set_up(1000,1500,2000);
     
 }
