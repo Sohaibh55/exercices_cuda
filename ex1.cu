@@ -62,8 +62,8 @@ void PrintOut(const float* mtx,int height,int width) {
 }
 
 void output( const int m, const int k, const int n , const float err) {
-    printf("=== Noyau naif");
-    printf("M(%d,%d) * N(%d,%d) = P(%d,%d) Err max: %f" , m , k , k , n , m , n , err);
+    printf("=== Noyau naif === \n");
+    printf("M(%d,%d) * N(%d,%d) = P(%d,%d) Err max: %f\n" , m , k , k , n , m , n , err);
 } 
 
 
@@ -89,7 +89,7 @@ float err_max(const float* mtx_cpu,const float* mtx_gpu,const int width,const in
         for (int j = 0; j < width; j++)
         {
             int idx = i * width + j;
-            cur_err = abs( mtx_gpu[idx] - mtx_cpu[i]);
+            cur_err = fabs( mtx_gpu[idx] - mtx_cpu[i]);
 
             if ( cur_err > err ) err = cur_err ; 
         }
@@ -102,7 +102,7 @@ void set_up(int m,int k,int n) {
     size_t sizeN =   k * n * sizeof(float);
     size_t sizeP =   m * n * sizeof(float);
    
-    float* M , *N , *P_gpu,*P_cpu , *P_d_h;
+    float* M , *N ,*M_gpu , *N_gpu , *P_gpu,*P_cpu , *P_d_h;
     
     cudaMallocHost(&M,sizeM);
     cudaMallocHost(&N,sizeN);
@@ -116,11 +116,13 @@ void set_up(int m,int k,int n) {
     fillMatrix(M,m,k);
     fillMatrix(N,k,n);
 
+    cudaMemcpy(M_gpu,M,sizeM,cudaMemcpyHostToDevice);
+    cudaMemcpy(N_gpu,M,sizeM,cudaMemcpyHostToDevice);
 
     int blockDimX = 16;
     int blockDimY = 16;
-    int gridDimX = (m + blockDimX  - 1) / blockDimX;
-    int gridDimY = (n + blockDimY - 1) / blockDimY;
+    int gridDimX = (n + blockDimX  - 1) / blockDimX;
+    int gridDimY = (m + blockDimY - 1) / blockDimY;
 
 
     dim3 block(blockDimX,blockDimY);
@@ -135,7 +137,7 @@ void set_up(int m,int k,int n) {
     cudaEventCreate(&stop);
     cudaEventRecord(start);
     
-    Naif_gpu<<<grid,block>>>(M,N,P_gpu,m,k,n);
+    Naif_gpu<<<grid,block>>>(M_gpu,N_gpu,P_gpu,m,k,n);
 
     cudaEventRecord(stop);
     cudaEventSynchronize(stop);
@@ -149,14 +151,13 @@ void set_up(int m,int k,int n) {
 
     cudaMemcpy(P_d_h,P_gpu,sizeP,cudaMemcpyDeviceToHost);
 
-    float err = err_max(P_d_h,P_gpu,m,n);
+    float err = err_max(P_cpu,P_d_h,m,n);
 
     output(m,k,n,err);
 
-
-    cudaFree(P_gpu);
-    free(M);free(N);
-    free(P_cpu);free(P_d_h);
+    cudaFree(P_gpu);cudaFree(M_gpu);cudaFree(N_gpu);
+    
+    cudaFreeHost(M);cudaFreeHost(N);cudaFreeHost(P_cpu);cudaFreeHost(P_d_h);
 
 }
 int main(int argc , char* argv[]) {
