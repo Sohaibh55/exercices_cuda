@@ -62,7 +62,7 @@ void PrintOut(const float* mtx,int height,int width) {
 }
 
 void output( const int m, const int k, const int n , const float err) {
-    printf("=== Noyau naif === \n");
+   
     printf("M(%dx%d) * N(%dx%d) = P(%dx%d) Err max: %f\n" , m , k , k , n , m , n , err);
 } 
 
@@ -155,14 +155,14 @@ void set_up(int m,int k,int n) {
     cudaMemcpy(P_d_h,P_gpu,sizeP,cudaMemcpyDeviceToHost);
 
     float err = err_max(P_cpu,P_d_h,m,n);
-
+     printf("=== Noyau naif === \n");
     output(m,k,n,err);
 
     cudaFree(P_gpu);cudaFree(M_gpu);cudaFree(N_gpu);
     
     cudaFreeHost(M);cudaFreeHost(N);
 
-    free(P_cpu);free(P_d_h);
+    free(P_cpu);free(P_d_h); //update
     
 
 }
