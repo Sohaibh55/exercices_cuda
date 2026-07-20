@@ -1,8 +1,8 @@
 
-INPUT ?= ex3
+INPUT ?= ex1
 tag = .cu
 compiler = nvcc
-output = ex3
+output = ex1
 
 compile:
 	@$(compiler) $(INPUT)$(tag) -o $(output)
