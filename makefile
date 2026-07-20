@@ -11,3 +11,7 @@ push:
 	@git add .
 	@git commit -m "updated"
 	@git push 
+
+test:
+	@gcc demo.c -o demo
+	@./demo
