@@ -39,7 +39,7 @@ void Naif_cpu(const float* M, const float* N,
         }
     }
 }
-void fillMatrix(float* mtx,int width,int height) {
+void fillMatrix(float* mtx,int height,int width) {
     for (int i = 0; i < height; i++)
     {
         for (int j = 0; j < width; j++)
@@ -63,7 +63,7 @@ void PrintOut(const float* mtx,int height,int width) {
 
 void output( const int m, const int k, const int n , const float err) {
     printf("=== Noyau naif === \n");
-    printf("M(%d,%d) * N(%d,%d) = P(%d,%d) Err max: %f\n" , m , k , k , n , m , n , err);
+    printf("M(%dx%d) * N(%dx%d) = P(%dx%d) Err max: %f\n" , m , k , k , n , m , n , err);
 } 
 
 
@@ -79,7 +79,7 @@ bool check_diff(const float* mtx_cpu,const float* mtx_gpu,const int height,const
     }
     return true;
 }
-float err_max(const float* mtx_cpu,const float* mtx_gpu,const int width,const int height) {
+float err_max(const float* mtx_cpu,const float* mtx_gpu,const int height,const int width) {
     
     float cur_err , err = 0.0f;
     
@@ -89,7 +89,7 @@ float err_max(const float* mtx_cpu,const float* mtx_gpu,const int width,const in
         for (int j = 0; j < width; j++)
         {
             int idx = i * width + j;
-            cur_err = fabs( mtx_gpu[idx] - mtx_cpu[i]);
+            cur_err = fabs( mtx_gpu[idx] - mtx_cpu[idx]);
 
             if ( cur_err > err ) err = cur_err ; 
         }
@@ -104,8 +104,8 @@ void set_up(int m,int k,int n) {
    
     float* M , *N ,*M_gpu , *N_gpu , *P_gpu,*P_cpu , *P_d_h;
     
-    M_gpu = (float*)malloc(sizeM);
-    N_gpu = (float*)malloc(sizeN);
+    cudaMalloc(&M_gpu, sizeM);
+    cudaMalloc(&N_gpu, sizeN);
 
     cudaMallocHost(&M,sizeM);
     cudaMallocHost(&N,sizeN);
@@ -120,7 +120,7 @@ void set_up(int m,int k,int n) {
     fillMatrix(N,k,n);
 
     cudaMemcpy(M_gpu,M,sizeM,cudaMemcpyHostToDevice);
-    cudaMemcpy(N_gpu,M,sizeM,cudaMemcpyHostToDevice);
+    cudaMemcpy(N_gpu,N,sizeN,cudaMemcpyHostToDevice);
 
     int blockDimX = 16;
     int blockDimY = 16;
@@ -160,7 +160,10 @@ void set_up(int m,int k,int n) {
 
     cudaFree(P_gpu);cudaFree(M_gpu);cudaFree(N_gpu);
     
-    cudaFreeHost(M);cudaFreeHost(N);cudaFreeHost(P_cpu);cudaFreeHost(P_d_h);
+    cudaFreeHost(M);cudaFreeHost(N);
+
+    free(P_cpu);free(P_d_h);
+    
 
 }
 int main(int argc , char* argv[]) {
