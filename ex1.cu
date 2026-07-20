@@ -61,7 +61,7 @@ void PrintOut(const float* mtx,int height,int width) {
     }
 }
 
-void output( const int m, const int k, const int n , const int err) {
+void output( const int m, const int k, const int n , const float err) {
     printf("=== Noyau naif");
     printf("M(%d,%d) * N(%d,%d) = P(%d,%d) Err max: %f" , m , k , k , n , m , n , err);
 } 
