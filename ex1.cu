@@ -104,6 +104,9 @@ void set_up(int m,int k,int n) {
    
     float* M , *N ,*M_gpu , *N_gpu , *P_gpu,*P_cpu , *P_d_h;
     
+    M_gpu = (float*)malloc(sizeM);
+    N_gpu = (float*)malloc(sizeN);
+
     cudaMallocHost(&M,sizeM);
     cudaMallocHost(&N,sizeN);
     
